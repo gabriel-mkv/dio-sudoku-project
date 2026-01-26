@@ -3,8 +3,8 @@ package br.com.gabrielmkv.model;
 public class Space {
     
     private Integer actualNum;
-    private final int expectedNum;
-    private final boolean fixed;
+    private int expectedNum;
+    private boolean fixed;
 
     public Space(int expectedNum, boolean fixed) {
         this.expectedNum = expectedNum;
@@ -27,8 +27,16 @@ public class Space {
         return expectedNum;
     }
 
+    public void setExpectedNum(int expectedNum){
+        this.expectedNum = expectedNum;
+    }
+
     public boolean isFixed() {
         return fixed;
+    }
+
+     public void setFixed(boolean fixed){
+        this.fixed = fixed;
     }
 
     public void clearSpace(){

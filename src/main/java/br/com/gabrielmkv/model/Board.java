@@ -9,12 +9,14 @@ import static br.com.gabrielmkv.model.GameStatusEnum.NON_STARTED;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import java.util.ArrayList;
+
 public class Board {
     
-    private final List<List<Space>> spaces;
+    private final List<List<Space>> spaces = new ArrayList<>();
 
-    public Board(final List<List<Space>> spaces) {
-        this.spaces = spaces;
+    public Board(int size) {
+        initializeEmptyGrid(size);
     }
 
     public List<List<Space>> getSpaces() {
@@ -71,5 +73,40 @@ public class Board {
 
     public boolean gameIsFinished(){
         return !hasErrors() && getStatus() == COMPLETE;
+    }
+
+    private void initializeEmptyGrid(int size){
+        for (int i = 0; i < size; i++){
+            List<Space> row = new ArrayList<>();
+
+            for (int j = 0; j < size; j++) {
+                row.add(new Space(0, false));
+            }
+
+            this.spaces.add(row);
+        }
+    }
+
+    private static boolean isValid(List<List<Space>> spaces, int row, int col, int value) {
+        int sizeBoard = spaces.size();
+        int side = (int) Math.sqrt(sizeBoard);
+        int startRow = (row / side) * side;
+        int startCol = (col / side) * side;
+
+        for (int i = 0; i < sizeBoard; i++) {
+            if (spaces.get(row).get(i).getActualNum() == value) {
+                return false;
+            }
+
+            if (spaces.get(i).get(col).getActualNum() == value) {
+                return false;
+            }
+
+            if (spaces.get(startRow + (i / side)).get(startCol + (i % side)).getActualNum() == value) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }

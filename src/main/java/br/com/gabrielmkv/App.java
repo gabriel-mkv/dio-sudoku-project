@@ -23,12 +23,6 @@ public class App  {
     private final static int BOARD_LIMIT = 9;
 
     public static void main( String[] args ) {
-        
-        final var positions = Stream.of(args[0].split(" "))
-                                    .collect(Collectors.toMap(
-                                                    k -> k.split(";")[0],
-                                                    v -> v.split(";")[1]
-                                    ));
 
         var option = 0;
 
@@ -49,7 +43,7 @@ public class App  {
             option = scanner.nextInt();
 
             switch (option) {
-                case 1 -> startGame(positions);
+                case 1 -> startGame();
                 case 2 -> inputNumber();
                 case 3 -> removeNumber();
                 case 4 -> showCurrentGame();
@@ -62,26 +56,12 @@ public class App  {
         }
     }
 
-    private static void startGame(final Map<String, String> positions) {
+    private static void startGame() {
         if (nonNull (board)) {
             System.out.println("O jogo já foi iniciado!");
             return;
         }
 
-        List<List<Space>> spaces = new ArrayList<>();
-        for (int i = 0; i < BOARD_LIMIT; i++) {
-            spaces.add(new ArrayList<>());
-
-            for (int j = 0; j < BOARD_LIMIT; j++) {
-                var positionConfig = positions.get("%s,%s".formatted(i, j));
-                var expected = Integer.parseInt(positionConfig.split(",")[0]);
-                var fixed = Boolean.parseBoolean(positionConfig.split(",")[1]);
-                var currentSpace = new Space(expected, fixed);
-                spaces.get(i).add(currentSpace);
-            }
-        }
-
-        board = new Board(spaces);
         System.out.println("O jogo foi criado!");
     }
 
@@ -135,7 +115,7 @@ public class App  {
         }
 
         System.out.println("Situação atual");
-        System.out.println(BoardTemplate.BOARD_TEMPLATE.formatted(args));
+        System.out.println(BoardTemplate.BOARD_9X9_TEMPLATE.formatted(args));
     }
 
     private static void showGameStatus() {
