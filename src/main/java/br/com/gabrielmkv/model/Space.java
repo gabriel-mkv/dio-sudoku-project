@@ -35,8 +35,9 @@ public class Space {
         return fixed;
     }
 
-     public void setFixed(boolean fixed){
+    public void setFixed(boolean fixed){
         this.fixed = fixed;
+        this.actualNum = fixed ? expectedNum : null;
     }
 
     public void clearSpace(){

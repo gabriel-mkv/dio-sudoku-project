@@ -13,14 +13,20 @@ import java.util.ArrayList;
 
 public class Board {
     
+    private final int size;
     private final List<List<Space>> spaces = new ArrayList<>();
 
     public Board(int size) {
+        this.size = size;
         initializeEmptyGrid(size);
     }
 
     public List<List<Space>> getSpaces() {
         return spaces;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public GameStatusEnum getStatus(){
@@ -76,37 +82,14 @@ public class Board {
     }
 
     private void initializeEmptyGrid(int size){
-        for (int i = 0; i < size; i++){
-            List<Space> row = new ArrayList<>();
+        for (int col = 0; col < size; col++){
+            List<Space> column = new ArrayList<>();
 
-            for (int j = 0; j < size; j++) {
-                row.add(new Space(0, false));
+            for (int row = 0; row < size; row++) {
+                column.add(new Space(0, false));
             }
 
-            this.spaces.add(row);
+            this.spaces.add(column);
         }
-    }
-
-    private static boolean isValid(List<List<Space>> spaces, int row, int col, int value) {
-        int sizeBoard = spaces.size();
-        int side = (int) Math.sqrt(sizeBoard);
-        int startRow = (row / side) * side;
-        int startCol = (col / side) * side;
-
-        for (int i = 0; i < sizeBoard; i++) {
-            if (spaces.get(row).get(i).getActualNum() == value) {
-                return false;
-            }
-
-            if (spaces.get(i).get(col).getActualNum() == value) {
-                return false;
-            }
-
-            if (spaces.get(startRow + (i / side)).get(startCol + (i % side)).getActualNum() == value) {
-                return false;
-            }
-        }
-        
-        return true;
     }
 }

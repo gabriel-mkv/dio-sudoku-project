@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import br.com.gabrielmkv.generator.SudokuGenerator;
 import br.com.gabrielmkv.model.Board;
 import br.com.gabrielmkv.model.Space;
 import br.com.gabrielmkv.util.BoardTemplate;
@@ -18,7 +19,7 @@ public class App  {
 
     private final static Scanner scanner = new Scanner(System.in);
         
-    private static Board board;
+    private static Board board = SudokuGenerator.createSudoku(16, 100);
 
     private final static int BOARD_LIMIT = 9;
 
@@ -57,10 +58,6 @@ public class App  {
     }
 
     private static void startGame() {
-        if (nonNull (board)) {
-            System.out.println("O jogo já foi iniciado!");
-            return;
-        }
 
         System.out.println("O jogo foi criado!");
     }
