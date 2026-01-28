@@ -51,8 +51,8 @@ public class Board {
                         .anyMatch(s -> nonNull(s.getActualNum()) && !s.getActualNum().equals(s.getExpectedNum()));
     }
 
-    public boolean changeValue(final int col, final int row, final int value){
-        var space = spaces.get(col).get(row);
+    public boolean changeValue(final int row, final int col, final int value){
+        var space = spaces.get(row).get(col);
 
         if (space.isFixed()){
             return false;
@@ -62,8 +62,8 @@ public class Board {
         return true;
     }
 
-    public boolean clearValue(final int col, final int row){
-        var space = spaces.get(col).get(row);
+    public boolean clearValue(final int row, final int col){
+        var space = spaces.get(row).get(col);
 
         if (space.isFixed()){
             return false;
@@ -74,7 +74,7 @@ public class Board {
     }
 
     public void reset(){
-        spaces.forEach(col -> col.forEach(row -> row.clearSpace()));
+        spaces.forEach(row -> row.forEach(col -> col.clearSpace()));
     }
 
     public boolean gameIsFinished(){
@@ -82,14 +82,14 @@ public class Board {
     }
 
     private void initializeEmptyGrid(int size){
-        for (int col = 0; col < size; col++){
-            List<Space> column = new ArrayList<>();
+        for (int row = 0; row < size; row++){
+            List<Space> currentRow = new ArrayList<>();
 
-            for (int row = 0; row < size; row++) {
-                column.add(new Space(0, false));
+            for (int col = 0; col < size; col++) {
+                currentRow.add(new Space(0, false));
             }
 
-            this.spaces.add(column);
+            this.spaces.add(currentRow);
         }
     }
 }

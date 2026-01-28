@@ -40,24 +40,46 @@ public class SudokuGenerator {
         }
     }
 
+    private static void shuffleColumns(int[][] grid) {
+        int size = grid.length;
+        int sectionSize = (int) Math.sqrt(size);
+        Random random = new Random();
+
+        for (int block = 0; block < sectionSize; block++) {
+            int start = block * sectionSize;
+
+            for (int i = 0; i < sectionSize; i++) {
+                int c1 = start + random.nextInt(sectionSize);
+                int c2 = start + random.nextInt(sectionSize);
+
+                for (int row = 0; row < size; row++) {
+                    int temp = grid[row][c1];
+                    grid[row][c1] = grid[row][c2];
+                    grid[row][c2] = temp;
+                }
+            }
+        }
+    }
+
     public static Board createSudoku(int size, int fixedPercentage) {
 
         int[][] solved = generateSolved(size);
         shuffleRows(solved);
+        shuffleColumns(solved);
 
         Board board = new Board(size);
         Random random = new Random();
 
-        for (int col = 0; col < size; col++) {
-            for (int row = 0; row < size; row++) {
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
 
-                Space space = board.getSpaces().get(col).get(row);
+                Space space = board.getSpaces().get(row).get(col);
 
                 space.setExpectedNum(solved[row][col]);
 
                 boolean fixed = random.nextInt(100) < fixedPercentage;
                 space.setFixed(fixed);
-
+                
             }
         }
 

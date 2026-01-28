@@ -6,14 +6,12 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import br.com.gabrielmkv.config.Config;
 import br.com.gabrielmkv.generator.SudokuGenerator;
 import br.com.gabrielmkv.model.Board;
 import br.com.gabrielmkv.model.GameBoardSizeEnum;
 import br.com.gabrielmkv.model.GameDifficultEnum;
-import br.com.gabrielmkv.util.BoardTemplate;
 import br.com.gabrielmkv.util.SymbolConverter;
 
 public class App  {
@@ -123,7 +121,7 @@ public class App  {
         System.out.printf("Informe o número que entrará na posição [%s, %s]: ", col, row);
         var value = runUntilGetValidNumber(1, Config.getBoardSize());
 
-        if (!board.changeValue(col, row, value)) {
+        if (!board.changeValue(row, col, value)) {
             System.out.printf("A posição [%s, %s] tem um valor fixo\n", col, row);
         }     
     }
@@ -139,7 +137,7 @@ public class App  {
         System.out.print("Informe a linha que o número será removido: ");
         var row = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
 
-        if (!board.clearValue(col, row)) {
+        if (!board.clearValue(row, col)) {
             System.out.printf("A posição [%s, %s] tem um valor fixo!\n", col, row);
         }
     }
@@ -153,7 +151,7 @@ public class App  {
         var boardToPrint = board.getSpaces()
                                 .stream()
                                 .flatMap(List::stream)
-                                .map(space -> String.valueOf(space.getActualNum() == null ? " " : SymbolConverter.converterIntToChar(space.getActualNum())))
+                                .map(space -> space.getActualNum() == null ? " " : SymbolConverter.converterIntToChar(space.getActualNum()))
                                 .toArray(String[]::new);
 
         System.out.println(
