@@ -1,29 +1,30 @@
 package br.com.gabrielmkv;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import java.util.List;
+import java.util.stream.Stream;
+
+import br.com.gabrielmkv.config.Config;
 import br.com.gabrielmkv.generator.SudokuGenerator;
 import br.com.gabrielmkv.model.Board;
-import br.com.gabrielmkv.model.Space;
+import br.com.gabrielmkv.model.GameBoardSizeEnum;
+import br.com.gabrielmkv.model.GameDifficultEnum;
 import br.com.gabrielmkv.util.BoardTemplate;
+import br.com.gabrielmkv.util.SymbolConverter;
 
 public class App  {
 
     private final static Scanner scanner = new Scanner(System.in);
-        
-    private static Board board = SudokuGenerator.createSudoku(16, 100);
 
-    private final static int BOARD_LIMIT = 9;
+    private static Board board = null;
 
     public static void main( String[] args ) {
+
+        configureGame();
 
         var option = 0;
 
@@ -57,23 +58,70 @@ public class App  {
         }
     }
 
-    private static void startGame() {
+    private static void configureGame() {
+        System.out.print(
+            "==================================\n" +
+            "       Tamanho do Tabuleiro       \n" +
+            "==================================\n" +
+            "1 - 4x4\n" +
+            "2 - 9x9 (padrão)\n" +
+            "3 - 16x16\n" +
+            "----------------------------------\n" +
+            "Digite um número de 1 a 3 (qualquer outro valor será 9x9 por padrão): "
+        );
+        var userOptionSize = scanner.nextInt();
 
-        System.out.println("O jogo foi criado!");
+        System.out.print(
+            "=================================\n" +
+            "       Dificuldade do Jogo       \n" +
+            "=================================\n" +
+            "1 - Fácil\n" +
+            "2 - Médio (padrão)\n" +
+            "3 - Difícil\n" +
+            "---------------------------------\n" +
+            "Digite um número de 1 a 3 (qualquer outro valor será Médio por padrão): "
+        );
+        var userOptionDifficulty = scanner.nextInt();
+
+        GameBoardSizeEnum size = switch(userOptionSize) {
+            case 1 -> GameBoardSizeEnum.SMALL;
+            case 2 -> GameBoardSizeEnum.MEDIUM;
+            case 3 -> GameBoardSizeEnum.LARGE;
+            default -> GameBoardSizeEnum.MEDIUM;
+        };
+
+        GameDifficultEnum difficulty = switch(userOptionDifficulty) {
+            case 1 -> GameDifficultEnum.EASY;
+            case 2 -> GameDifficultEnum.MEDIUM;
+            case 3 -> GameDifficultEnum.HARD;
+            default -> GameDifficultEnum.MEDIUM;
+        };
+
+        Config.setup(size, difficulty);
+    }
+
+    private static void startGame() {
+        if (nonNull(board)) {
+            System.out.println("\nO jogo ainda não foi iniciado!");
+            return;
+        }
+
+        board = SudokuGenerator.createSudoku(Config.getBoardSize(), Config.getDifficulty());
+        System.out .println("\nO jogo foi criado!");
     }
 
     private static void inputNumber(){
         if (isNull(board)) {
-            System.out.println("O jogo ainda não foi iniciado!");
+            System.out.println("\nO jogo ainda não foi iniciado!");
             return;
         }
 
         System.out.print("Informe a coluna que o número será inserido: ");
-        var col = runUntilGetValidNumber(0, 8);
+        var col = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
         System.out.print("Informe a linha que o número será inserido: ");
-        var row = runUntilGetValidNumber(0, 8);
+        var row = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
         System.out.printf("Informe o número que entrará na posição [%s, %s]: ", col, row);
-        var value = runUntilGetValidNumber(1, 9);
+        var value = runUntilGetValidNumber(1, Config.getBoardSize());
 
         if (!board.changeValue(col, row, value)) {
             System.out.printf("A posição [%s, %s] tem um valor fixo\n", col, row);
@@ -82,14 +130,14 @@ public class App  {
 
     private static void removeNumber() {
         if (isNull(board)) {
-            System.out.println("O jogo ainda não foi iniciado!");
+            System.out.println("\nO jogo ainda não foi iniciado!");
             return;
         }
 
         System.out.print("Informe a coluna que o número será removido: ");
-        var col = runUntilGetValidNumber(0, 8);
+        var col = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
         System.out.print("Informe a linha que o número será removido: ");
-        var row = runUntilGetValidNumber(0, 8);
+        var row = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
 
         if (!board.clearValue(col, row)) {
             System.out.printf("A posição [%s, %s] tem um valor fixo!\n", col, row);
@@ -98,26 +146,27 @@ public class App  {
 
     private static void showCurrentGame() {
         if (isNull(board)) {
-            System.out.println("O jogo ainda não foi iniciado!");
+            System.out.println("\nO jogo ainda não foi iniciado!");
             return;
         }
 
-        var args = new Object[81];
-        var argPos = 0;
-        
-        for (int i = 0; i < BOARD_LIMIT; i++) {
-            for (var col : board.getSpaces()) {
-                args[argPos ++] = " " + ((isNull(col.get(i).getActualNum())) ? " " : col.get(i).getActualNum());
-            }
-        }
+        var boardToPrint = board.getSpaces()
+                                .stream()
+                                .flatMap(List::stream)
+                                .map(space -> String.valueOf(space.getActualNum() == null ? " " : SymbolConverter.converterIntToChar(space.getActualNum())))
+                                .toArray(String[]::new);
 
-        System.out.println("Situação atual");
-        System.out.println(BoardTemplate.BOARD_9X9_TEMPLATE.formatted(args));
+        System.out.println(
+            "\n===================================\n" +
+            "       Situação do Tabuleiro       \n" +
+            "===================================\n"
+        );
+        System.out.println(String.format(Config.getTemplateForSize(Config.getBoardSize()), (Object[]) boardToPrint));
     }
 
     private static void showGameStatus() {
         if (isNull(board)) {
-            System.out.println("O jogo ainda não foi iniciado!");
+            System.out.println("\nO jogo ainda não foi iniciado!");
             return;
         }
 
@@ -132,7 +181,7 @@ public class App  {
 
     private static void clearGame(){
         if (isNull(board)) {
-            System.out.println("O jogo ainda não foi iniciado!");
+            System.out.println("\nO jogo ainda não foi iniciado!");
             return;
         }
 
@@ -151,7 +200,7 @@ public class App  {
 
     private  static void finishGame() {
         if (isNull(board)) {
-            System.out.println("O jogo ainda não foi iniciado!");
+            System.out.println("\nO jogo ainda não foi iniciado!");
             return;
         }
 
