@@ -30,20 +30,28 @@ public class App  {
         var option = 0;
 
         while (true) {
-            System.out.println("\n==================================");
-            System.out.println("          MENU PRINCIPAL       ");
-            System.out.println("==================================");
-            System.out.println("1. Iniciar jogo");
-            System.out.println("2. Colocar número");
-            System.out.println("3. Remover número");
-            System.out.println("4. Visualizar o jogo atual");
-            System.out.println("5. Verificar status do jogo");
-            System.out.println("6. Limpar o jogo");
-            System.out.println("7. Finalizar o jogo");
-            System.out.println("8. Sair");
-            System.out.print("\n > Escolha uma opção: ");
+            limparTela();
 
-            option = scanner.nextInt();
+            System.out.print(
+                "\n====================================\n" +
+                "|         KONO SUDOKU DA!          |\n" +
+                "====================================\n" +
+                "| [1] Iniciar jogo                 |\n" +
+                "|----------------------------------|\n" +
+                "| [2] Colocar número               |\n" +
+                "| [3] Remover número               |\n" +
+                "| [4] Visualizar o jogo atual      |\n" +
+                "|----------------------------------|\n" +
+                "| [5] Verificar status do jogo     |\n" +
+                "| [6] Limpar o jogo                |\n" +
+                "| [7] Finalizar o jogo             |\n" +
+                "|----------------------------------|\n" +
+                "| [8] Sair                         |\n" +
+                "====================================\n" +
+                "\n > Escolha uma opção: "
+            );
+
+            option = runUntilGetValidNumber(1, 8);
 
             switch (option) {
                 case 1 -> startGame();
@@ -57,8 +65,9 @@ public class App  {
                     System.out.println("\n  [✕] Finalizando o jogo... Até a próxima!");
                     System.exit(0);
                 }
-                default -> System.out.print("\n  [!] Opção inválida! Por favor, escolha uma das opções do menu!\n");
             }
+
+            aguardarEnter();
         }
     }
 
@@ -76,26 +85,26 @@ public class App  {
      */
     private static void configureGame() {
         System.out.print(
-            "\n==================================\n" +
-            "      SELECIONE A DIMENSÃO        \n" +
-            "==================================\n" +
-            " [1] Grade 4x4   (Pequeno)\n" +
-            " [2] Grade 9x9   (Médio)\n" +
-            " [3] Grade 16x16 (Grande)\n" +
-            "----------------------------------\n" +
-            " > Escolha o tamanho do desafio: "
+            "\n====================================\n" +
+            "|       SELECIONE A DIMENSÃO       |\n" +
+            "====================================\n" +
+            "| [1] Grade 4x4   (Pequeno)        |\n" +
+            "| [2] Grade 9x9   (Médio)          |\n" +
+            "| [3] Grade 16x16 (Grande)         |\n" +
+            "====================================\n" +
+            "\n > Escolha o tamanho do desafio: "
         );
         var userOptionSize = runUntilGetValidNumber(1, 3);
 
         System.out.print(
-            "\n=================================\n" +
-            "     NÍVEL DE COMPLEXIDADE       \n" +
-            "=================================\n" +
-            " [1] Aprendiz (Fácil)\n" +
-            " [2] Estrategista (Médio)\n" +
-            " [3] Mestre (Difícil)\n" +
-            "---------------------------------\n" +
-            " > Defina o nível da partida: "
+            "\n====================================\n" +
+            "|      NÍVEL DE COMPLEXIDADE       |\n" +
+            "====================================\n" +
+            "| [1] Aprendiz (Fácil)             |\n" +
+            "| [2] Estrategista (Médio)         |\n" +
+            "| [3] Mestre (Difícil)             |\n" +
+            "====================================\n" +
+            "\n > Defina o nível da partida: "
         );
         var userOptionDifficulty = runUntilGetValidNumber(1, 3);
 
@@ -131,7 +140,7 @@ public class App  {
      */
     private static void startGame() {
         if (nonNull(board)) {
-            System.out.println("\n  [!] O jogo ainda não foi iniciado!");
+            System.out.println("\n  [!] O jogo já foi iniciado!");
             return;
         }
 
@@ -158,22 +167,22 @@ public class App  {
             return;
         }
 
-        System.out.print(" > Escolha a coluna da jogada: ");
+        System.out.print("\n > Escolha a coluna da jogada: ");
         var col = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
-        System.out.print(" > Escolha a linha da jogada: ");
+        System.out.print("\n > Escolha a linha da jogada: ");
         var row = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
         Integer value;
 
         if (Config.getBoardSize() == 16) {
-            System.out.printf(" > Qual valor deseja colocar na posição [%s, %s]? ", col, row);
+            System.out.printf("\n > Qual valor deseja colocar na posição [%s, %s]? ", col, row);
             value = SymbolConverter.converterCharToInteger(runUntilGetValidChar());
         } else {
-            System.out.printf(" > Digite o número para a posição [%s, %s]: ", col, row);
+            System.out.printf("\n > Digite o número para a posição [%s, %s]: ", col, row);
             value = runUntilGetValidNumber(1, Config.getBoardSize());
         }
 
         if (!board.changeValue(row, col, value)) {
-            System.out.printf("\n  [!] A posição [%s, %s] possui um valor fixo e não pode ser alterada.", col, row);
+            System.out.printf("\n  [!] A posição [%s, %s] possui um valor fixo e não pode ser alterada.\n", col, row);
         }     
     }
 
@@ -195,13 +204,13 @@ public class App  {
             return;
         }
 
-        System.out.print(" > Escolha a coluna do número a ser removido: ");
+        System.out.print("\n > Escolha a coluna do número a ser removido: ");
         var col = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
-        System.out.print(" > Escolha a linha do número a ser removido: ");
+        System.out.print("\n > Escolha a linha do número a ser removido: ");
         var row = runUntilGetValidNumber(0, Config.getBoardSize() - 1);
 
         if (!board.clearValue(row, col)) {
-            System.out.printf("\n  [!] A posição [%s, %s] possui um valor fixo e não pode ser alterada.", col, row);
+            System.out.printf("\n  [!] A posição [%s, %s] possui um valor fixo e não pode ser alterada.\n", col, row);
         }
     }
 
@@ -402,4 +411,21 @@ public class App  {
         }
     }
 
+    /*
+     * Limpa o terminal e move o cursor para o topo.
+     */
+    public static void limparTela() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    /*
+     * Pausa o jogo até o usuário apertar Enter.
+     * O primeiro nextLine() limpa o lixo do buffer e o segundo espera a tecla.
+     */
+    private static void aguardarEnter() {
+        System.out.println("\n  [↵] Pressione ENTER para voltar ao menu");
+        scanner.nextLine();
+        scanner.nextLine();
+    }
 }
