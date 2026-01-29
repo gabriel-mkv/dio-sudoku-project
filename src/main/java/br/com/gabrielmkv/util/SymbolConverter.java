@@ -9,7 +9,7 @@ public final class SymbolConverter {
         return String.valueOf(symbols.charAt(number - 1));
     }
 
-    public static int converterCharToInt(char symbol){
+    public static Integer converterCharToInteger(char symbol){
         if (symbol >= '1' && symbol <= '9') {
             return symbol - '0';
         } else {
