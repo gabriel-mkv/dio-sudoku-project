@@ -70,7 +70,7 @@ public class App  {
             "----------------------------------\n" +
             " > Digite um número de 1 a 3 (qualquer outro valor será 9x9 por padrão): "
         );
-        var userOptionSize = scanner.nextInt();
+        var userOptionSize = runUntilGetValidNumber(1, 3);
 
         System.out.print(
             "\n=================================\n" +
@@ -82,7 +82,7 @@ public class App  {
             "---------------------------------\n" +
             " > Digite um número de 1 a 3 (qualquer outro valor será Médio por padrão): "
         );
-        var userOptionDifficulty = scanner.nextInt();
+        var userOptionDifficulty = runUntilGetValidNumber(1, 3);
 
         GameBoardSizeEnum size = switch(userOptionSize) {
             case 1 -> GameBoardSizeEnum.SMALL;

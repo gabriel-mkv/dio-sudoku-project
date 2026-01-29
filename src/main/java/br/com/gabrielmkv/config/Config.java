@@ -13,7 +13,7 @@ public final class Config {
 
     public static void setup(GameBoardSizeEnum size, GameDifficultEnum difficulty) {
         BOARD_SIZE = size.getSize();
-        DIFFICULTY = difficulty.getPercentage();
+        DIFFICULTY = difficulty.getPercentage(size.getSize());
     }
 
     public static String getTemplateForSize(int boardSize) {
