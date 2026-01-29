@@ -12,6 +12,9 @@ import br.com.gabrielmkv.generator.SudokuGenerator;
 import br.com.gabrielmkv.model.Board;
 import br.com.gabrielmkv.model.GameBoardSizeEnum;
 import br.com.gabrielmkv.model.GameDifficultEnum;
+import br.com.gabrielmkv.model.GameStatusEnum;
+import br.com.gabrielmkv.model.Space;
+import br.com.gabrielmkv.util.BoardTemplate;
 import br.com.gabrielmkv.util.SymbolConverter;
 
 public class App  {
@@ -27,9 +30,9 @@ public class App  {
         var option = 0;
 
         while (true) {
-            System.out.println("\n============================");
-            System.out.println("       MENU PRINCIPAL       ");
-            System.out.println("============================");
+            System.out.println("\n==================================");
+            System.out.println("          MENU PRINCIPAL       ");
+            System.out.println("==================================");
             System.out.println("1. Iniciar jogo");
             System.out.println("2. Colocar número");
             System.out.println("3. Remover número");
@@ -59,28 +62,40 @@ public class App  {
         }
     }
 
+    /**
+     * Orquestra a interface de configuração inicial antes do início da partida.
+     * <p>
+     * Este método é responsável por exibir os menus de seleção no console e capturar 
+     * as escolhas do usuário, mapeando os números digitados para as constantes 
+     * {@link GameBoardSizeEnum} e {@link GameDifficultEnum}.
+     * </p>
+     * <p>
+     * Ao final da execução, as configurações são persistidas globalmente através 
+     * de {@link Config#setup(GameBoardSizeEnum, GameDifficultEnum)}.
+     * </p>
+     */
     private static void configureGame() {
         System.out.print(
+            "\n==================================\n" +
+            "      SELECIONE A DIMENSÃO        \n" +
             "==================================\n" +
-            "       Tamanho do Tabuleiro       \n" +
-            "==================================\n" +
-            "1 - 4x4\n" +
-            "2 - 9x9 (padrão)\n" +
-            "3 - 16x16\n" +
+            " [1] Grade 4x4   (Pequeno)\n" +
+            " [2] Grade 9x9   (Médio)\n" +
+            " [3] Grade 16x16 (Grande)\n" +
             "----------------------------------\n" +
-            " > Digite um número de 1 a 3 (qualquer outro valor será 9x9 por padrão): "
+            " > Escolha o tamanho do desafio: "
         );
         var userOptionSize = runUntilGetValidNumber(1, 3);
 
         System.out.print(
             "\n=================================\n" +
-            "       Dificuldade do Jogo       \n" +
+            "     NÍVEL DE COMPLEXIDADE       \n" +
             "=================================\n" +
-            "1 - Fácil\n" +
-            "2 - Médio (padrão)\n" +
-            "3 - Difícil\n" +
+            " [1] Aprendiz (Fácil)\n" +
+            " [2] Estrategista (Médio)\n" +
+            " [3] Mestre (Difícil)\n" +
             "---------------------------------\n" +
-            " > Digite um número de 1 a 3 (qualquer outro valor será Médio por padrão): "
+            " > Defina o nível da partida: "
         );
         var userOptionDifficulty = runUntilGetValidNumber(1, 3);
 
@@ -101,6 +116,19 @@ public class App  {
         Config.setup(size, difficulty);
     }
 
+    /**
+     * Inicia uma nova partida de Sudoku com base nas configurações previamente definidas.
+     * <p>
+     * O método verifica se já existe uma instância de {@link Board} ativa para evitar 
+     * a sobreposição de jogos. Caso o tabuleiro esteja livre, ele utiliza o 
+     * {@link SudokuGenerator#createSudoku(int, GameDifficultEnum)} para gerar um novo 
+     * desafio técnico usando os parâmetros de {@link Config}.
+     * </p>
+     * <p>
+     * Exibe uma mensagem de confirmação ao usuário após a criação bem-sucedida 
+     * do tabuleiro.
+     * </p>
+     */
     private static void startGame() {
         if (nonNull(board)) {
             System.out.println("\n  [!] O jogo ainda não foi iniciado!");
@@ -111,6 +139,19 @@ public class App  {
         System.out.println("\n  [✓] O jogo foi criado com sucesso! Boa sorte!");
     }
 
+    /**
+     * Captura e processa a tentativa de jogada do usuário.
+     * <p>
+     * O método solicita as coordenadas (coluna e linha) e o valor desejado. 
+     * Para tabuleiros de tamanho 16, utiliza o {@link SymbolConverter} para tratar entradas 
+     * hexadecimais ou símbolos, enquanto para outros tamanhos utiliza entrada numérica direta.
+     * </p>
+     * <p>
+     * A jogada é validada pelo {@link Board#changeValue(int, int, int)}, que impede a 
+     * alteração de células {@link Space#isFixed() fixas}. Caso o jogo não tenha sido 
+     * inicializado, a operação é abortada com um aviso.
+     * </p>
+     */
     private static void inputNumber(){
         if (isNull(board)) {
             System.out.println("\n  [!] O jogo ainda não foi iniciado!");
@@ -136,6 +177,18 @@ public class App  {
         }     
     }
 
+    /**
+     * Realiza a remoção de um valor inserido pelo usuário em uma coordenada específica.
+     * <p>
+     * O método solicita a coluna e a linha desejadas e tenta executar a limpeza 
+     * através do {@link Board#clearValue(int, int)}. Assim como na inserção, 
+     * a operação é bloqueada caso a célula seja {@link Space#isFixed() fixa}.
+     * </p>
+     * <p>
+     * Caso o tabuleiro não tenha sido inicializado, uma mensagem de aviso é exibida 
+     * e a operação é encerrada.
+     * </p>
+     */
     private static void removeNumber() {
         if (isNull(board)) {
             System.out.println("\n  [!] O jogo ainda não foi iniciado!");
@@ -152,6 +205,19 @@ public class App  {
         }
     }
 
+    /**
+     * Renderiza e exibe o estado atual do tabuleiro no console.
+     * <p>
+     * O método processa a matriz de {@link Space}, convertendo cada valor numérico 
+     * em sua representação visual (caractere ou espaço vazio) através do 
+     * {@link SymbolConverter#converterIntToChar(Integer)}.
+     * </p>
+     * <p>
+     * A exibição utiliza um modelo visual dinâmico obtido por 
+     * {@link BoardTemplate#getTemplateForSize(int)}, garantindo que a moldura do 
+     * tabuleiro se ajuste ao tamanho configurado (4x4, 9x9 ou 16x16).
+     * </p>
+     */
     private static void showCurrentGame() {
         if (isNull(board)) {
             System.out.println("\n  [!] O jogo ainda não foi iniciado!");
@@ -165,13 +231,24 @@ public class App  {
                                 .toArray(String[]::new);
 
         System.out.println(
-            "\n===================================\n" +
-            "       Situação do Tabuleiro       \n" +
-            "===================================\n"
+            "\n==================================\n" +
+            "       SITUAÇÃO DO TABULEIRO       \n" +
+            "==================================\n"
         );
-        System.out.println(String.format(Config.getTemplateForSize(Config.getBoardSize()), (Object[]) boardToPrint));
+        System.out.println(String.format(BoardTemplate.getTemplateForSize(Config.getBoardSize()), (Object[]) boardToPrint));
     }
 
+    /**
+     * Exibe o progresso e a integridade da partida atual.
+     * <p>
+     * O método apresenta o rótulo descritivo do {@link GameStatusEnum status} do jogo 
+     * e realiza uma varredura através do {@link Board#hasErrors()} para informar 
+     * se há conflitos entre os valores inseridos e a solução esperada.
+     * </p>
+     * <p>
+     * Se o tabuleiro não tiver sido inicializado, uma mensagem de aviso é exibida.
+     * </p>
+     */
     private static void showGameStatus() {
         if (isNull(board)) {
             System.out.println("\n  [!] O jogo ainda não foi iniciado!");
@@ -187,6 +264,18 @@ public class App  {
         }
     }
 
+    /**
+     * Realiza a limpeza completa das jogadas do usuário no tabuleiro atual.
+     * <p>
+     * O método solicita uma confirmação do usuário (S/N) para evitar a perda acidental 
+     * de progresso. Caso confirmado, utiliza o método {@link Board#reset()} para 
+     * remover todos os valores inseridos, preservando apenas as pistas {@link Space#isFixed() fixas}.
+     * </p>
+     * <p>
+     * Inclui uma estrutura de repetição para validar a entrada do usuário, garantindo 
+     * que apenas respostas válidas sejam processadas.
+     * </p>
+     */
     private static void clearGame(){
         if (isNull(board)) {
             System.out.println("\n  [!] O jogo ainda não foi iniciado!");
@@ -207,6 +296,19 @@ public class App  {
         }
     }
 
+    /**
+     * Avalia as condições de finalização e encerra a partida caso o desafio tenha sido vencido.
+     * <p>
+     * O método utiliza o {@link Board#gameIsFinished()} para validar se o tabuleiro está totalmente 
+     * preenchido e sem {@link Board#hasErrors() erros}. Caso positivo, exibe a mensagem de vitória, 
+     * renderiza o tabuleiro final através do {@link #showCurrentGame()} e libera a memória 
+     * definindo o {@code board} como {@code null}.
+     * </p>
+     * <p>
+     * Se o jogo ainda contiver erros ou estiver incompleto, fornece o feedback específico 
+     * ao jogador sem encerrar a sessão.
+     * </p>
+     */
     private  static void finishGame() {
         if (isNull(board)) {
             System.out.println("\n  [!] O jogo ainda não foi iniciado!");
@@ -224,6 +326,21 @@ public class App  {
         }
     }
 
+    /**
+     * Solicita e valida uma entrada numérica via console, garantindo que o valor 
+     * esteja dentro de um intervalo específico.
+     * <p>
+     * O método permanece em um laço de repetição (loop infinito) até que o usuário 
+     * forneça uma entrada que satisfaça duas condições:
+     * <ol>
+     * <li>Seja um dígito numérico válido (validado via Expressão Regular).</li>
+     * <li>Esteja contido entre os limites {@code min} e {@code max} (inclusive).</li>
+     * </ol>
+     * </p>
+     * * @param min o valor mínimo aceitável.
+     * @param max o valor máximo aceitável.
+     * @return o número inteiro validado e convertido.
+     */
     private static int runUntilGetValidNumber(final int min, final int max) {
         while (true){
             var input = scanner.next().trim();
@@ -242,6 +359,23 @@ public class App  {
         }
     }
 
+    /**
+     * Solicita e valida uma entrada de caractere único via console para tabuleiros grandes.
+     * <p>
+     * O método trata a entrada de forma insensível a maiúsculas/minúsculas (convertendo 
+     * internamente para {@code uppercase}) e valida se o caractere pertence ao conjunto 
+     * aceito para o Sudoku de dimensão 16:
+     * </p>
+     * <ul>
+     * <li>Dígitos numéricos de '1' a '9'.</li>
+     * <li>Letras de 'A' a 'G' (representando os valores de 10 a 16).</li>
+     * </ul>
+     * <p>
+     * O laço de repetição garante que a execução só retorne quando um caractere 
+     * dentro desses intervalos for fornecido.
+     * </p>
+     * @return o caractere validado em formato maiúsculo.
+     */
     private static char runUntilGetValidChar() {
         String input;
         char current;

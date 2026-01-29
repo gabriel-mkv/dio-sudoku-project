@@ -5,8 +5,28 @@ import java.util.Random;
 import br.com.gabrielmkv.model.Board;
 import br.com.gabrielmkv.model.Space;
 
+/**
+ * Gerador responsável pela criação e configuração de novos tabuleiros de Sudoku.
+ * <p>
+ * Esta classe encapsula a lógica de construção de uma grade válida através do 
+ * {@link #generateSolved(int) preenchimento inicial}, seguido pelo embaralhamento 
+ * de {@link #shuffleRows(int[][]) linhas} e {@link #shuffleColumns(int[][]) colunas}.
+ * <p>
+ * Por fim, o método {@link #createSudoku(int, int)} realiza a distribuição de pistas 
+ * no tabuleiro com base na dificuldade selecionada.
+ */
 public class SudokuGenerator {
     
+    /**
+     * Gera uma matriz preenchida com uma solução válida inicial.
+     * <p>
+     * Utiliza um algoritmo de deslocamento baseado na raiz quadrada do tamanho 
+     * da grade (sectionSize) para garantir que não haja números repetidos 
+     * em linhas, colunas ou quadrantes.
+     * </p>
+     * @param size dimensão do tabuleiro.
+     * @return matriz bidimensional de inteiros resolvida.
+     */
     private static int[][] generateSolved(int size) {
         int sectionSize = (int) Math.sqrt(size);
         int[][] grid = new int[size][size];
@@ -21,6 +41,14 @@ public class SudokuGenerator {
         return grid;
     }
 
+    /**
+     * Embaralha as linhas do tabuleiro dentro de seus respectivos blocos.
+     * <p>
+     * Este método mantém a validade do Sudoku pois apenas troca linhas 
+     * que pertencem ao mesmo conjunto de quadrantes horizontais.
+     * </p>
+     * @param grid a matriz a ser embaralhada.
+     */
     private static void shuffleRows(int[][] grid) {
         int size = grid.length;
         int sectionSize = (int) Math.sqrt(size);
@@ -40,6 +68,14 @@ public class SudokuGenerator {
         }
     }
 
+    /**
+     * Embaralha as colunas do tabuleiro dentro de seus respectivos blocos.
+     * <p>
+     * Semelhante ao {@link #shuffleRows(int[][])}, este método apenas troca 
+     * colunas dentro do mesmo bloco vertical para preservar as regras do jogo.
+     * </p>
+     * @param grid a matriz a ser embaralhada.
+     */
     private static void shuffleColumns(int[][] grid) {
         int size = grid.length;
         int sectionSize = (int) Math.sqrt(size);
@@ -61,6 +97,16 @@ public class SudokuGenerator {
         }
     }
 
+    /**
+     * Cria e configura um novo objeto {@link Board} pronto para o jogo.
+     * <p>
+     * Este método integra a geração da solução, o embaralhamento e a 
+     * definição das células fixas com base na dificuldade escolhida.
+     * </p>
+     * @param size dimensão do tabuleiro (4, 9 ou 16).
+     * @param fixedPercentage probabilidade (0-100) de uma célula ser revelada.
+     * @return um {@link Board} populado com os valores esperados e células fixas definidas.
+     */
     public static Board createSudoku(int size, int fixedPercentage) {
 
         int[][] solved = generateSolved(size);

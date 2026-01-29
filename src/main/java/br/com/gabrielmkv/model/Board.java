@@ -11,6 +11,14 @@ import static java.util.Objects.nonNull;
 
 import java.util.ArrayList;
 
+/**
+ * Gerencia a matriz de jogo e as operações lógicas do tabuleiro de Sudoku.
+ * <p>
+ * Esta classe é responsável por controlar o fluxo da partida, permitindo a 
+ * {@link #changeValue(int, int, int) alteração de valores}, verificação de 
+ * {@link #hasErrors() erros} e monitoramento do {@link #getStatus() status atual}.
+ * </p>
+ */
 public class Board {
     
     private final int size;
@@ -29,6 +37,12 @@ public class Board {
         return size;
     }
 
+    /**
+     * Determina o estado atual do jogo.
+     * @return {@link GameStatusEnum#NON_STARTED} se não houver jogadas,
+     * {@link GameStatusEnum#INCOMPLETE} se houver espaços vazios,
+     * ou {@link GameStatusEnum#COMPLETE} se todas as células estiverem preenchidas.
+     */
     public GameStatusEnum getStatus(){
         if (spaces.stream()
                     .flatMap(Collection::stream)
@@ -41,6 +55,10 @@ public class Board {
                     .anyMatch(s -> isNull(s.getActualNum())) ? INCOMPLETE : COMPLETE;
     }
 
+    /**
+     * Verifica se existe alguma divergência entre o valor inserido e o gabarito.
+     * @return {@code true} se houver ao menos um número incorreto (não fixo) preenchido.
+     */
     public boolean hasErrors(){
         if (getStatus() == NON_STARTED){
             return false;
@@ -51,6 +69,13 @@ public class Board {
                         .anyMatch(s -> nonNull(s.getActualNum()) && !s.getActualNum().equals(s.getExpectedNum()));
     }
 
+    /**
+     * Insere um valor em uma coordenada específica, respeitando as travas de segurança.
+     * @param row índice da linha.
+     * @param col índice da coluna.
+     * @param value valor a ser inserido.
+     * @return {@code true} se a operação foi bem-sucedida; {@code false} se a célula for {@link Space#isFixed() fixa}.
+     */
     public boolean changeValue(final int row, final int col, final int value){
         var space = spaces.get(row).get(col);
 
@@ -62,6 +87,12 @@ public class Board {
         return true;
     }
 
+    /**
+     * Remove o valor de uma célula específica.
+     * @param row índice da linha.
+     * @param col índice da coluna.
+     * @return {@code true} se a célula foi limpa; {@code false} se for uma célula {@link Space#isFixed() fixa}.
+     */
     public boolean clearValue(final int row, final int col){
         var space = spaces.get(row).get(col);
 
@@ -73,14 +104,25 @@ public class Board {
         return true;
     }
 
+    /**
+     * Redefine o tabuleiro, removendo todas as jogadas do usuário e mantendo apenas as pistas.
+     */
     public void reset(){
         spaces.forEach(row -> row.forEach(col -> col.clearSpace()));
     }
 
+    /**
+     * Valida se o tabuleiro foi preenchido totalmente e sem erros.
+     * @return {@code true} se o jogo foi vencido.
+     */
     public boolean gameIsFinished(){
         return !hasErrors() && getStatus() == COMPLETE;
     }
 
+    /**
+     * Cria a estrutura inicial da grade preenchida com espaços vazios.
+     * @param size dimensão do tabuleiro.
+     */
     private void initializeEmptyGrid(int size){
         for (int row = 0; row < size; row++){
             List<Space> currentRow = new ArrayList<>();

@@ -1,9 +1,38 @@
 package br.com.gabrielmkv.util;
 
+/**
+ * Template de tabuleiro para o jogo do Sudoku.
+ * <p>
+ * Esta classe contém strings de template para criar o tabuleiro do jogo do Sudoku.
+ * <p>
+ * Os templates são definidos como strings formatadas, onde os espaços para os números do jogo são representados por `%2s`.
+ * <p>
+ * O método {@link #getTemplateForSize(int)} retorna o template do tabuleiro de acordo com o tamanho do tabuleiro especificado.
+ * <p>
+ * O template do tabuleiro é retornado como uma string.
+ */
 public final class BoardTemplate {
     
     private BoardTemplate() {}
-    
+
+    /**
+     * Retorna o template do tabuleiro de acordo com o tamanho do tabuleiro configurado.
+     *
+     * @param boardSize o tamanho do tabuleiro
+     * @return o template do tabuleiro
+     */
+    public static String getTemplateForSize(int boardSize) {
+        return switch(boardSize) {
+            case 4 -> BoardTemplate.BOARD_4x4_TEMPLATE;
+            case 9 -> BoardTemplate.BOARD_9X9_TEMPLATE;
+            case 16 -> BoardTemplate.BOARD_16X16_TEMPLATE;
+            default -> BoardTemplate.BOARD_9X9_TEMPLATE;
+        };
+    }
+
+    /**
+     * Template do tabuleiro de tamanho 4x4.
+     */
     public final static String BOARD_4x4_TEMPLATE = 
     """
         ***************************************
@@ -31,7 +60,9 @@ public final class BoardTemplate {
         ***************************************
     """;
 
-
+    /**
+     * Template do tabuleiro de tamanho 9x9.
+     */
     public final static String BOARD_9X9_TEMPLATE = 
     """
         *************************************************************************************
@@ -85,6 +116,9 @@ public final class BoardTemplate {
         *************************************************************************************
     """;
 
+    /**
+     * Template do tabuleiro de tamanho 16x16.
+     */
     public final static String BOARD_16X16_TEMPLATE = 
     """
         *****************************************************************************************************************************************************

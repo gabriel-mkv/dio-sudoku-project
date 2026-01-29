@@ -1,17 +1,34 @@
 package br.com.gabrielmkv.model;
 
+/**
+ * Enumerado que representa a dificuldade do jogo do Sudoku.
+ * <p>
+ * Cada instância do enum contém a porcentagem de valores preenchidos no tabuleiro para cada dificuldade.
+ * <p>
+ * A porcentagem de valores preenchidos pode ser obtida através do método {@link #getPercentage(int)}.
+ * <p>
+ * O array de inteiros em cada constante segue o mapeamento: [0]=4x4, [1]=9x9 e [2]=16x16
+ * <p>
+ * A porcentagem é calculada com base no tamanho do tabuleiro, que pode ser obtido através do método {@link GameBoardSizeEnum#getSize()}.
+ */
 public enum GameDifficultEnum {
     
     EASY(new int []{38, 42, 45}),
     MEDIUM(new int []{29, 37, 40}),
     HARD(new int []{24, 31, 35});
 
-    private int[] percentages;
+    private final int[] percentages;
 
     private GameDifficultEnum(int[] percentages) {
         this.percentages = percentages;
     }
 
+    /**
+     * Retorna a porcentagem de valores preenchidos no tabuleiro para a dificuldade especificada.
+     *
+     * @param size o tamanho do tabuleiro
+     * @return a porcentagem de valores preenchidos no tabuleiro
+     */
     public int getPercentage(int size) {
         return switch (size) {
             case 4 -> percentages[0];
