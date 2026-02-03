@@ -1,4 +1,27 @@
 .root {
-    -fx-font-family: 'Montserrat', 'Segoe UI', sans-serif;
+    -fx-font-family: "Georgia";
     -fx-background-color: #debe97;
+}
+
+/* Top Section */
+#title {
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+    -fx-fill: #bc5525;
+    -fx-effect: dropshadow(one-pass-box, #efbc5a, 0, 0, 5, 5);
+}
+
+#author {
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-fill: #5a7b36;
+}
+
+/* Main Container */
+.menu-container {
+    -fx-border-color: #bc5525;
+    -fx-border-width: 2px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 5);
 }

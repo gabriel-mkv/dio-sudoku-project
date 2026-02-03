@@ -10,26 +10,18 @@
 <BorderPane xmlns="http://javafx.com/javafx/" 
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="br.com.gabrielmkv.controller.MenuController"
-            stylesheets="@../css/menu.css, @../css/global.css"
-            styleClass="menu-container"
-            prefWidth="400" prefHeight="570">
-
-    <top>
-        <HBox spacing="10" alignment="center" prefHeight="100">
-              <Label text="KONO SUDOKU DA!" styleClass="menu-title"/>
-        </HBox>
-    </top>
+            stylesheets="@../css/menu.css, @../css/global.css">
 
     <center>
         <VBox spacing="32" alignment="center">
             <VBox spacing="7" maxWidth="400">
                 <Label text="Escolha a Dificuldade:" styleClass="option-label"/>
-                <ComboBox fx:id="gameDifficulty" prefWidth="360" styleClass="combo-box" />            
+                <ComboBox fx:id="gameDifficulty" prefWidth="400" styleClass="combo-box" />            
             </VBox>
 
             <VBox spacing="7" maxWidth="400">
                 <Label text="Escolha o Tamanho:" styleClass="option-label" />
-                <ComboBox fx:id="gameBoardSize" prefWidth="360" styleClass="combo-box" />
+                <ComboBox fx:id="gameBoardSize" prefWidth="400" styleClass="combo-box" />
             </VBox>
         </VBox>
     </center>

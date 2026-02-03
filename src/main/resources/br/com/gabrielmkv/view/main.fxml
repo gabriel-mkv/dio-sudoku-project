@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="main"
+            xmlns="http://javafx.com/javafx/" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.com.gabrielmkv.controller.MainController"
+            stylesheets="@../css/global.css"
+            styleClass="menu-container">
+    
+    <top>
+        <VBox spacing="10" alignment="center" prefHeight="100">
+              <Text text="KONO SUDOKU DA!" fx:id="title"/>
+              <Text text="by gabriel.mkv" fx:id="author"/>
+        </VBox>
+    </top>
+
+</BorderPane>
