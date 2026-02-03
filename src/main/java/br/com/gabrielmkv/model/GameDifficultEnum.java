@@ -13,14 +13,16 @@ package br.com.gabrielmkv.model;
  */
 public enum GameDifficultEnum {
     
-    EASY(new int []{38, 42, 45}),
-    MEDIUM(new int []{29, 37, 40}),
-    HARD(new int []{24, 31, 35});
+    EASY(new int []{38, 42, 45}, "Fácil"),
+    MEDIUM(new int []{29, 37, 40}, "Normal"),
+    HARD(new int []{24, 31, 35}, "Difícil");
 
     private final int[] percentages;
+    private final String label;
 
-    private GameDifficultEnum(int[] percentages) {
+    private GameDifficultEnum(int[] percentages, final String label) {
         this.percentages = percentages;
+        this.label = label;
     }
 
     /**
@@ -36,5 +38,10 @@ public enum GameDifficultEnum {
             case 16 -> percentages[2];
             default -> percentages[1];
         };
+    }
+
+    @Override
+    public String toString() {
+        return label;
     }
 }

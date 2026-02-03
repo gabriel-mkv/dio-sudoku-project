@@ -20,13 +20,20 @@ public enum GameBoardSizeEnum {
     MEDIUM(9),
     LARGE(16);
 
-    private int size;
+    private final int size;
+    private final String label;
 
     private GameBoardSizeEnum(final int size) {
         this.size = size;
+        this.label = size + "x" + size;
     }
 
     public int getSize() {
         return size;
+    }
+
+    @Override
+    public String toString() {
+        return label;
     }
 }
