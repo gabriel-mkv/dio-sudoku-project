@@ -17,7 +17,7 @@ import br.com.gabrielmkv.model.Space;
 import br.com.gabrielmkv.util.BoardTemplate;
 import br.com.gabrielmkv.util.SymbolConverter;
 
-public class App  {
+public class AppConsole {
 
     private final static Scanner scanner = new Scanner(System.in);
 
