@@ -1,0 +1,53 @@
+.sudoku-alert {
+    -fx-background-color: #f4f7f6;
+    -fx-border-width: 2px;
+}
+
+.sudoku-alert .header-panel .label {
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+
+.alert-success {
+    -fx-border-color: #5a7b36;
+}
+.alert-success .header-panel {
+    -fx-background-color: #5a7b36;
+}
+.alert-success .header-panel .label {
+    -fx-text-fill: white;
+}
+
+.alert-warning {
+    -fx-border-color: #efbc5a;
+}
+.alert-warning .header-panel {
+    -fx-background-color: #efbc5a;
+}
+.alert-warning .header-panel .label {
+    -fx-text-fill: #5c4722;
+}
+
+.alert-error {
+    -fx-border-color: #bc5525;
+}
+.alert-error .header-panel {
+    -fx-background-color: #bc5525;
+}
+.alert-error .header-panel .label {
+    -fx-text-fill: white;
+}
+
+.alert-confirm {
+    -fx-border-color: #e1d068;
+}
+.alert-confirm .header-panel {
+    -fx-background-color: #e1d068;
+}
+.alert-confirm .header-panel .label {
+    -fx-text-fill: #4a421a;
+}
+
+.sudoku-alert .button {
+    -fx-cursor: hand;
+}

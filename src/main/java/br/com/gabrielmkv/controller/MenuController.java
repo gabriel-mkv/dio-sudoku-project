@@ -4,11 +4,10 @@ import br.com.gabrielmkv.AppFX;
 import br.com.gabrielmkv.config.Config;
 import br.com.gabrielmkv.model.GameBoardSizeEnum;
 import br.com.gabrielmkv.model.GameDifficultEnum;
+import br.com.gabrielmkv.util.SudokuAlerts;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MenuController implements ScreanController{
@@ -67,15 +66,9 @@ public class MenuController implements ScreanController{
     }
 
     private void showValidationError() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-
-        alert.initOwner(AppFX.getStage());
-        alert.initModality(Modality.WINDOW_MODAL);
-        
-        alert.setTitle("Configuração de jogo incompleta!");
-        alert.setHeaderText(null);
-        alert.setContentText("Por favor, selecione o tamanho do tabuleiro e a dificuldade do jogo.");
-        alert.showAndWait();  
+        SudokuAlerts.showWarning("Selecione seu Desafio",
+                                "Defina as regras do jogo", 
+                                "Para gerar o tabuleiro, precisamos saber o tamanho e a dificuldade que você deseja encarar.");
     }
 
 }
