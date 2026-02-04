@@ -18,16 +18,16 @@ public final class SudokuAlerts {
         dialogPane.getStyleClass().addAll("sudoku-alert", styleClassName);
     }
 
-    public static void showVictory(){
+    public static void showInformation(String title, String header, String content){
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.initOwner(AppFX.getStage());
         alert.initModality(Modality.WINDOW_MODAL);
 
-        alert.setTitle("Vitória Magnífica!");
-        alert.setHeaderText("Você é um mestre do Sudoku!");
-        alert.setContentText("Desafio concluído com perfeição. Sua mente está afiada!");
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
 
-        applyStyle(alert, "alert-success");
+        applyStyle(alert, "alert-information");
         alert.showAndWait();
     }
 
