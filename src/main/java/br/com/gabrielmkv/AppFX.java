@@ -10,27 +10,30 @@ public class AppFX extends Application {
         private static Stage primaryStage;
 
         @Override
-        public void start(Stage stage) throws Exception {
+        public void start(Stage stage) {
                 primaryStage = stage;
 
-                FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource(
-                                "/br/com/gabrielmkv/view/main.fxml"
-                        )
-                );
+                try {
+                        FXMLLoader loader = new FXMLLoader(
+                                getClass().getResource(
+                                        "/br/com/gabrielmkv/view/main.fxml"
+                                )
+                        );
 
-                Scene scene = new Scene(loader.load());
+                        Scene scene = new Scene(loader.load());
 
-                // CSS global
-                scene.getStylesheets().add(
-                        getClass().getResource(
-                                "/br/com/gabrielmkv/css/global.css"
-                        ).toExternalForm()
-                );
+                        scene.getStylesheets().add(
+                                getClass().getResource(
+                                        "/br/com/gabrielmkv/css/global.css"
+                                ).toExternalForm()
+                        );
 
-                stage.setTitle("Sudoku");
-                stage.setScene(scene);
-                stage.show();
+                        stage.setTitle("Sudoku");
+                        stage.setScene(scene);
+                        stage.show();
+                } catch (Exception e) {
+                        System.err.println("Falha ao iniciar a aplicação: " + e.getMessage());
+                }
 
         }
 

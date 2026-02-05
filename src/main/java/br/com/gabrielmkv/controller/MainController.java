@@ -37,7 +37,7 @@ public class MainController {
             main.setBottom(null);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Erro ao carregar o fxml: " + fxmlPath + " - " + e.getMessage());
         }
     }
 }
