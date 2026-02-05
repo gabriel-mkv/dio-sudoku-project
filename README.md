@@ -1,6 +1,6 @@
 # Kono Sudoku Da!
 
-Este é um projeto de jogo de Sudoku desenvolvido em Java. Atualmente, sua interface é executada via console. O projeto foi criado com base nos fundamentos de Java aprendidos na [DIO (Digital Innovation One)](https://www.dio.me/) na Formação Java Fundamentals, inspirado no repositório [digitalinnovationone/sudoku](https://github.com/digitalinnovationone/sudoku).
+Este é um projeto de jogo de Sudoku desenvolvido em Java. O projeto oferece duas interfaces: uma visual moderna (JavaFX) e uma clássica via terminal. O projeto foi criado com base nos fundamentos de Java aprendidos na [DIO (Digital Innovation One)](https://www.dio.me/) na Formação Java Fundamentals, inspirado no repositório [digitalinnovationone/sudoku](https://github.com/digitalinnovationone/sudoku).
 
 ## 📋 Sobre o Projeto
 
@@ -24,7 +24,7 @@ O jogo permite configurar o tamanho do tabuleiro e a dificuldade, gerando desafi
   - Inserção e remoção de números via coordenadas.
   - Validação de jogadas (impede alteração de números fixos/pistas).
   - Verificação de status (incompleto, completo, com erros).
-  - Visualização do tabuleiro formatado no console.
+  - Visualização do tabuleiro formatado (Console ou GUI).
   
 - **Geração Dinâmica:** Algoritmo que cria tabuleiros válidos e embaralha linhas/colunas para garantir variedade.
 
@@ -42,13 +42,15 @@ Isso garante que todo jogo gerado tenha pelo menos uma solução válida.
 ## 🛠️ Tecnologias Utilizadas
 
 - **Java 21:** Linguagem principal (definida no `pom.xml`).
+- **JavaFX:** Framework para a interface gráfica.
 - **Maven:** Gerenciamento de dependências e build.
 
 ## 📦 Como Executar
 
 ### Pré-requisitos
 
-Certifique-se de ter o JDK (Java Development Kit) instalado (versão 21 ou superior).
+Certifique-se de ter o **JDK 21** (ou superior) instalado.
+Também é necessário ter o **Maven** instalado para compilar o projeto e gerar o Fat JAR.
 
 ### Passos
 
@@ -59,43 +61,48 @@ Certifique-se de ter o JDK (Java Development Kit) instalado (versão 21 ou super
    ```
 
 2. **Compile e execute (via Maven):**
-   O projeto utiliza o `maven-jar-plugin` para gerar um JAR executável automaticamente após o build.
+   O projeto utiliza o `maven-shade-plugin` para gerar um JAR executável (Fat JAR) contendo todas as dependências.
    ```bash
    mvn clean package
-   java -jar target/sudoku-project-1.0-SNAPSHOT.jar
    ```
+   
+   - **Para jogar com Interface Gráfica (Padrão):**
+      ```bash
+      java -jar target/sudoku-project-1.0-SNAPSHOT.jar
+      ```
 
-3. **Compile e execute (manualmente):**
-   ```bash
-   # Navegue até a pasta raiz do código fonte
-   cd src/main/java
-   
-   # Compile todos os arquivos
-   javac br/com/gabrielmkv/**/*.java
-   
-   # Execute a classe principal
-   java br.com.gabrielmkv.App
-   ```
+   - **Para jogar no Terminal (Console):** 
+      ```bash
+      java -jar target/sudoku-project-1.0-SNAPSHOT.jar --console
+      ```
 
 ### 💡 Dica: Criando um atalho (Alias)
 
-Caso queira executar o jogo digitando apenas `sudoku` no terminal, adicione o alias correspondente ao seu método de compilação no seu arquivo `.bashrc` (ou `.zshrc`):
+Caso queira executar o jogo digitando apenas `sudoku` (GUI) ou `sudoku-cli` (Terminal), adicione os seguintes aliases no seu arquivo `.bashrc` (ou `.zshrc`):
 
-**Opção 1: Se você usou Maven (Recomendado)**
 ```bash
-alias sudoku='java -jar /caminho/completo/ate/o/projeto/target/sudoku-project-1.0-SNAPSHOT.jar'
-```
-
-**Opção 2: Se você compilou manualmente**
-```bash
-alias sudoku='java -cp /caminho/completo/ate/o/projeto/src/main/java br.com.gabrielmkv.App'
+alias sudoku='java -jar /caminho/completo/ate/o/projeto/target/sudoku-project-1.0-SNAPSHOT.jar' # Abre GUI
+alias sudoku-cli='java -jar /caminho/completo/ate/o/projeto/target/sudoku-project-1.0-SNAPSHOT.jar --console' # Abre Terminal
 ```
 
 ## 🎮 Como Jogar
 
-Ao iniciar a aplicação, siga as instruções no menu interativo:
+### Interface Gráfica (GUI)
 
-1. **Configuração:** Escolha o tamanho do tabuleiro e a dificuldade.
+1. **Menu Inicial:** Selecione a dificuldade e o tamanho do tabuleiro nos menus suspensos e clique em "INICIAR JOGO".
+
+2. **Tabuleiro:**
+
+   - Clique em uma célula para selecioná-la.
+   - Digite o número desejado (ou letras A-G para o modo 16x16).
+   - Células fixas (em negrito) não podem ser alteradas.
+  
+3. **Controles:** Utilize os botões na parte inferior para verificar status, limpar o jogo ou finalizar a partida.
+
+### Modo Terminal (Console)
+
+Ao iniciar com a flag `--console`, siga as instruções no menu interativo:
+1. **Configuração:** Digite os números correspondentes para escolher o tamanho e a dificuldade.
 
 2. **Menu Principal:** Utilize as opções numéricas para interagir.
 
