@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  View responsável pela tela de menu inicial do jogo Sudoku.
+  <p>
+  Este arquivo FXML define a interface de configuração da partida, onde o usuário seleciona
+  os parâmetros do jogo antes de iniciar. A estrutura é organizada em um {@link BorderPane}:
+  </p>
+  <ul>
+    <li><b>Center:</b> Formulário de configuração contendo {@link ComboBox} para seleção de dificuldade e tamanho do tabuleiro.</li>
+    <li><b>Bottom:</b> Área de ação contendo o botão para iniciar o jogo.</li>
+  </ul>
+  <p>
+  O comportamento desta view é gerenciado pela classe {@link br.com.gabrielmkv.controller.MenuController}.
+  </p>
+-->
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.com.gabrielmkv.controller.MenuController"
+            stylesheets="@../css/menu.css, @../css/global.css">
+
+    <center>
+        <VBox spacing="32" alignment="center">
+            <VBox spacing="7" maxWidth="400">
+                <Label text="Escolha a Dificuldade:" styleClass="option-label"/>
+                <ComboBox fx:id="gameDifficulty" prefWidth="400" styleClass="combo-box" />            
+            </VBox>
+
+            <VBox spacing="7" maxWidth="400">
+                <Label text="Escolha o Tamanho:" styleClass="option-label" />
+                <ComboBox fx:id="gameBoardSize" prefWidth="400" styleClass="combo-box" />
+            </VBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="center" prefHeight="50">
+              <Button text="INICIAR JOGO" onAction="#onStartGame" styleClass="btn-start"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

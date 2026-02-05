@@ -1,0 +1,102 @@
+/*
+ * Estilos para a tela principal do jogo (game-view).
+ * Define a aparência do tabuleiro, células e botões de controle.
+ */
+
+/* --- Tabuleiro (Células) --- */
+.sudoku-cell {
+    -fx-pref-width: 60px;
+    -fx-pref-height: 60px;
+    -fx-alignment: center;
+    -fx-font-size: 20px;
+    -fx-background-color: white;
+    -fx-border-color: #d3d3d3;
+    -fx-border-width: 1px;
+}
+
+.cell-16x16 {
+    -fx-pref-width: 40px;  
+    -fx-pref-height: 40px; 
+    -fx-font-size: 14px;
+}
+
+
+/* --- Bordas dos Quadrantes --- */
+.section-right {
+    -fx-border-color: #d3d3d3 #4a6d3a #d3d3d3 #d3d3d3;
+    -fx-border-width: 1px 4px 1px 1px;
+}
+
+.section-bottom {
+    -fx-border-color: #d3d3d3 #d3d3d3 #4a6d3a #d3d3d3;
+    -fx-border-width: 1px 1px 4px 1px;
+}
+
+.section-both {
+    -fx-border-color: #d3d3d3 #4a6d3a #4a6d3a #d3d3d3;
+    -fx-border-width: 1px 4px 4px 1px;
+}
+
+
+/* --- Botões de Ação --- */
+.button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20 10 20;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.btn-verify {
+    -fx-background-color: #e1d068;
+    -fx-text-fill: #4a421a; 
+}
+.btn-verify:hover {
+    -fx-background-color: #f2e185;
+    -fx-translate-y: -2;
+}
+.btn-verify:pressed {
+    -fx-background-color: #c9ba5d;
+}
+
+.btn-finish {
+    -fx-background-color: #5a7b36;
+}
+.btn-finish:hover {
+    -fx-background-color: #6d9442;
+    -fx-translate-y: -2;
+}
+.btn-finish:pressed {
+    -fx-background-color: #48632b;
+}
+
+.btn-clear {
+    -fx-background-color: #bc5525;
+}
+.btn-clear:hover {
+    -fx-background-color: #d6612b;
+    -fx-translate-y: -2;
+}
+.btn-clear:pressed {
+    -fx-background-color: #9e461f;
+}
+
+.btn-menu {
+    -fx-background-color: #efbc5a;
+    -fx-text-fill: #5c4722;
+}
+.btn-menu:hover {
+    -fx-background-color: #ffca6b;
+    -fx-translate-y: -2;
+}
+.btn-menu:pressed {
+    -fx-background-color: #d9ab52;
+}
+
+.btn-verify, .btn-finish, .btn-clear, .btn-menu {
+    -fx-pref-width: 180px; 
+    -fx-pref-height: 40px;
+}

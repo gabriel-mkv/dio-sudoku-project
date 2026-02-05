@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  View principal que atua como o container base da aplicação (Root Layout).
+  <p>
+  Este arquivo FXML define a estrutura global da janela, servindo de "casca" para a navegação
+  entre as diferentes telas do jogo. Ele utiliza um {@link BorderPane} onde:
+  </p>
+  <ul>
+    <li><b>Top:</b> Cabeçalho fixo contendo o título do jogo e créditos.</li>
+    <li><b>Center:</b> Área dinâmica onde as views (Menu, Tabuleiro) são injetadas pelo controlador.</li>
+  </ul>
+  <p>
+  O gerenciamento da navegação e troca de cenas é realizado pela classe {@link br.com.gabrielmkv.controller.MainController}.
+  </p>
+-->
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="main"
+            xmlns="http://javafx.com/javafx/" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.com.gabrielmkv.controller.MainController"
+            stylesheets="@../css/global.css"
+            styleClass="menu-container">
+    
+    <top>
+        <VBox spacing="10" alignment="center" prefHeight="100">
+              <Text text="KONO SUDOKU DA!" fx:id="title"/>
+              <Text text="by gabriel.mkv" fx:id="author"/>
+        </VBox>
+    </top>
+
+</BorderPane>

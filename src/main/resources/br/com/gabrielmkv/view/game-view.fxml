@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  View responsável pela tela principal do jogo Sudoku.
+  <p>
+  Este arquivo FXML define a estrutura visual da partida, dividindo a interface em áreas lógicas
+  através de um {@link BorderPane}:
+  </p>
+  <ul>
+    <li><b>Center:</b> Área dedicada ao tabuleiro do jogo ({@link GridPane}), preenchido dinamicamente pelo controlador.</li>
+    <li><b>Bottom:</b> Barra de ferramentas contendo as ações de jogo (Verificar, Limpar, Finalizar) e navegação.</li>
+  </ul>
+  <p>
+  O comportamento desta view é gerenciado pela classe {@link br.com.gabrielmkv.controller.GameController}.
+  </p>
+-->
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.com.gabrielmkv.controller.GameController"
+            stylesheets="@../css/game.css, @../css/global.css">
+
+    <center>
+        <GridPane fx:id="sudokuGrid" hgap="10" vgap="10" alignment="center">
+        </GridPane>
+    </center>
+
+    <bottom>
+        <VBox alignment="center" spacing="15">
+            <padding>
+                <Insets top="25"/> 
+            </padding>
+            <HBox alignment="center" spacing="10">
+                <Button text="Verificar Status" styleClass="btn-verify" onAction="#verifyStatusGame"/>
+                <Button text="Limpar Jogo" styleClass="btn-clear" onAction="#cleanGame"/>
+                <Button text="Finalizar Jogo" styleClass="btn-finish" onAction="#finalizeGame"/>
+            </HBox>
+
+            <Button text="VOLTAR AO MENU" onAction="#backToMenu" styleClass="btn-menu"/>
+        </VBox>
+    </bottom>
+
+</BorderPane>
