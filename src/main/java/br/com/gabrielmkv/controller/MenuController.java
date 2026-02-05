@@ -1,9 +1,9 @@
 package br.com.gabrielmkv.controller;
 
-import br.com.gabrielmkv.AppFX;
 import br.com.gabrielmkv.config.Config;
 import br.com.gabrielmkv.model.GameBoardSizeEnum;
 import br.com.gabrielmkv.model.GameDifficultEnum;
+import br.com.gabrielmkv.ui.AppFX;
 import br.com.gabrielmkv.util.SudokuAlerts;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

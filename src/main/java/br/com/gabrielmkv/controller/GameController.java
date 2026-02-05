@@ -5,7 +5,7 @@ import br.com.gabrielmkv.model.Board;
 import br.com.gabrielmkv.model.Space;
 import br.com.gabrielmkv.util.SudokuAlerts;
 import br.com.gabrielmkv.util.SymbolConverter;
-import br.com.gabrielmkv.AppFX;
+import br.com.gabrielmkv.ui.AppFX;
 import br.com.gabrielmkv.config.Config;
 
 import javafx.fxml.FXML;

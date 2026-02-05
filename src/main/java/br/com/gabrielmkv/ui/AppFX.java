@@ -1,4 +1,4 @@
-package br.com.gabrielmkv;
+package br.com.gabrielmkv.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

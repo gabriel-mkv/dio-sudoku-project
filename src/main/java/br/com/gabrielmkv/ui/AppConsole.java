@@ -1,4 +1,4 @@
-package br.com.gabrielmkv;
+package br.com.gabrielmkv.ui;
 
 import java.util.Scanner;
 

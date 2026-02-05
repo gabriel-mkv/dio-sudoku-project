@@ -2,7 +2,7 @@ package br.com.gabrielmkv.util;
 
 import java.util.Optional;
 
-import br.com.gabrielmkv.AppFX;
+import br.com.gabrielmkv.ui.AppFX;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Alert.AlertType;
