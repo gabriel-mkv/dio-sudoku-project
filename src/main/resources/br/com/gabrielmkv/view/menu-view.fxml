@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  View responsável pela tela de menu inicial do jogo Sudoku.
+  <p>
+  Este arquivo FXML define a interface de configuração da partida, onde o usuário seleciona
+  os parâmetros do jogo antes de iniciar. A estrutura é organizada em um {@link BorderPane}:
+  </p>
+  <ul>
+    <li><b>Center:</b> Formulário de configuração contendo {@link ComboBox} para seleção de dificuldade e tamanho do tabuleiro.</li>
+    <li><b>Bottom:</b> Área de ação contendo o botão para iniciar o jogo.</li>
+  </ul>
+  <p>
+  O comportamento desta view é gerenciado pela classe {@link br.com.gabrielmkv.controller.MenuController}.
+  </p>
+-->
+
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>

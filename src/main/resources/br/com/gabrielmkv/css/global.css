@@ -1,9 +1,17 @@
+/*
+ * Folha de estilos global da aplicação.
+ * Define configurações base (fonte, fundo) e estilos compartilhados
+ * por múltiplas telas, como o cabeçalho e containers principais.
+ */
+
+/* --- Configurações Globais --- */
 .root {
     -fx-font-family: "Georgia";
     -fx-background-color: #debe97;
 }
 
-/* Top Section */
+
+/* --- Tipografia do Cabeçalho --- */
 #title {
     -fx-font-weight: bold;
     -fx-font-size: 32px;
@@ -18,7 +26,8 @@
     -fx-fill: #5a7b36;
 }
 
-/* Main Container */
+
+/* --- Container Principal --- */
 .menu-container {
     -fx-border-color: #bc5525;
     -fx-border-width: 2px;

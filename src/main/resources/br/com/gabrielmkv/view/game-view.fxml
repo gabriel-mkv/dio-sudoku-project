@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  View responsável pela tela principal do jogo Sudoku.
+  <p>
+  Este arquivo FXML define a estrutura visual da partida, dividindo a interface em áreas lógicas
+  através de um {@link BorderPane}:
+  </p>
+  <ul>
+    <li><b>Center:</b> Área dedicada ao tabuleiro do jogo ({@link GridPane}), preenchido dinamicamente pelo controlador.</li>
+    <li><b>Bottom:</b> Barra de ferramentas contendo as ações de jogo (Verificar, Limpar, Finalizar) e navegação.</li>
+  </ul>
+  <p>
+  O comportamento desta view é gerenciado pela classe {@link br.com.gabrielmkv.controller.GameController}.
+  </p>
+-->
+
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>

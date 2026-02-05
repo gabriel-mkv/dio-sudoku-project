@@ -1,3 +1,9 @@
+/* 
+ * Estilos para os alertas (SudokuAlerts).
+ * Define temas de cores e a estrutura visual dos diálogos.
+ */
+
+/* --- Temas (Variáveis) --- */
 .alert-information {
     -fx-brand-color: #4a6d3a;
     -fx-text-header: white;
@@ -19,6 +25,7 @@
 }
 
 
+/* --- Estrutura Visual --- */
 .sudoku-alert {
     -fx-background-color: #f4f7f6;
     -fx-border-color: -fx-brand-color;
