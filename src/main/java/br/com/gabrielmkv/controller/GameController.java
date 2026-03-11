@@ -7,7 +7,7 @@ import br.com.gabrielmkv.util.SudokuAlerts;
 import br.com.gabrielmkv.util.SymbolConverter;
 import br.com.gabrielmkv.ui.AppFX;
 import br.com.gabrielmkv.config.Config;
-
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.scene.control.ProgressIndicator;
 
 /**
  * Controlador responsável pela lógica da tela principal do jogo (Tabuleiro).
@@ -37,6 +38,9 @@ public class GameController implements ScreanController {
     private GridPane sudokuGrid;
 
     @FXML
+    private ProgressIndicator loadingIcon;
+
+    @FXML
     private Button verifyStatusGame;
 
     @FXML
@@ -46,28 +50,60 @@ public class GameController implements ScreanController {
     private Button endGame;
 
     /**
-     * Inicializa o controlador e prepara o ambiente de jogo.
+     * Inicializa o controlador e prepara o ambiente de jogo de forma assíncrona.
      * <p>
-     * Este método é chamado automaticamente pelo JavaFX após o carregamento do
-     * FXML.
-     * Ele instancia um {@link SudokuGenerator} e um novo {@link Board} com base no
-     * tamanho definido em {@link Config}. Em seguida, utiliza o método
-     * {@link SudokuGenerator#generateSudoku(int, Board)} para popular o tabuleiro
-     * com um novo desafio, usando a dificuldade também obtida de {@link Config}.
+     * Este método é chamado automaticamente pelo JavaFX. Para evitar que a interface
+     * gráfica congele durante a geração do tabuleiro (que pode ser demorada),
+     * ele delega a criação do Sudoku para uma {@link Task} executada em uma
+     * thread separada.
      * </p>
      * <p>
-     * Ao final, invoca {@link #renderBoard()} para construir a interface gráfica da
-     * grade
-     * e {@link #setStageWidthAndHeight()} para ajustar as dimensões da janela.
+     * Durante a execução da tarefa, um {@link ProgressIndicator} (ícone de carregamento)
+     * é exibido.
+     * <ul>
+     *   <li><b>Em caso de sucesso:</b> O tabuleiro gerado é recebido, o ícone de
+     *       carregamento é ocultado, e os métodos {@link #renderBoard()} e
+     *       {@link #setStageWidthAndHeight()} são chamados para construir a
+     *       interface e ajustar a janela.</li>
+     *   <li><b>Em caso de falha:</b> Um alerta de erro é exibido ao usuário através
+     *       de {@link SudokuAlerts#showError(String, String, String)}.</li>
+     * </ul>
+     * A geração utiliza os parâmetros de tamanho e dificuldade definidos em {@link Config}.
      * </p>
      */
     @FXML
     private void initialize() {
-        SudokuGenerator generator = new SudokuGenerator(Config.getBoardSize());
-        board = new Board(Config.getBoardSize());
-        board = generator.generateSudoku(Config.getDifficulty(), board);
-        renderBoard();
-        setStageWidthAndHeight();
+        int size = Config.getBoardSize();
+        int difficulty = Config.getDifficulty();
+        loadingIcon.setVisible(true);
+
+        Task<Board> generateTask = new Task<>() {
+            @Override
+            protected Board call() {
+                SudokuGenerator generator = new SudokuGenerator(size);
+                Board board = new Board(size);
+                return generator.generateSudoku(difficulty, board);
+            }
+        };
+
+        generateTask.setOnSucceeded(event -> {
+            loadingIcon.setVisible(false);
+            board = generateTask.getValue();
+            renderBoard();
+            setStageWidthAndHeight();
+        });
+
+        generateTask.setOnFailed(event -> {
+            loadingIcon.setVisible(false);
+            generateTask.getException().printStackTrace();
+            SudokuAlerts.showError("Ops!",
+                    "Algo deu errado",
+                    "Não conseguimos gerar o seu Sudoku agora. Tente novamente!");
+        });
+
+        Thread thread = new Thread(generateTask);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     /**
@@ -95,29 +131,38 @@ public class GameController implements ScreanController {
     /**
      * Cria o componente visual para uma célula individual do tabuleiro.
      * <p>
-     * Este método instancia um {@link TextField} que representará uma célula na grade.
+     * Este método instancia um {@link TextField} que representará uma célula na
+     * grade.
      * Ele aplica as seguintes configurações:
      * <ul>
-     *   <li>Define um {@link TextFormatter} para converter automaticamente a entrada para maiúsculas.</li>
-     *   <li>Aplica estilos CSS base, incluindo um específico para tabuleiros 16x16 ("cell-16x16").</li>
-     *   <li>Se a célula ({@link Space}) já tiver um valor, ele é convertido via {@link SymbolConverter} e exibido.</li>
-     *   <li>Se a célula for fixa ({@link Space#isFixed()}), o campo é desabilitado para edição e estilizado em negrito.</li>
-     *   <li>Se for editável, anexa um ouvinte de evento ({@link #handleInputUser(TextField)}) para processar a entrada do usuário.</li>
-     *   <li>Invoca {@link #applyBlockBoundaries(TextField, int, int)} para adicionar as bordas visuais dos quadrantes.</li>
+     * <li>Define um {@link TextFormatter} para converter automaticamente a entrada
+     * para maiúsculas.</li>
+     * <li>Aplica estilos CSS base, incluindo um específico para tabuleiros 16x16
+     * ("cell-16x16").</li>
+     * <li>Se a célula ({@link Space}) já tiver um valor, ele é convertido via
+     * {@link SymbolConverter} e exibido.</li>
+     * <li>Se a célula for fixa ({@link Space#isFixed()}), o campo é desabilitado
+     * para edição e estilizado em negrito.</li>
+     * <li>Se for editável, anexa um ouvinte de evento
+     * ({@link #handleInputUser(TextField)}) para processar a entrada do
+     * usuário.</li>
+     * <li>Invoca {@link #applyBlockBoundaries(TextField, int, int)} para adicionar
+     * as bordas visuais dos quadrantes.</li>
      * </ul>
      * </p>
      * 
      * @param space o modelo de dados da célula.
      * @param row   o índice da linha da célula na grade.
      * @param col   o índice da coluna da célula na grade.
-     * @return o nó {@link TextField} configurado e pronto para ser adicionado ao {@link GridPane}.
+     * @return o nó {@link TextField} configurado e pronto para ser adicionado ao
+     *         {@link GridPane}.
      */
     private Node createCell(Space space, int row, int col) {
 
         TextField field = new TextField();
 
         field.setTextFormatter(new TextFormatter<String>(change -> {
-            change.setText(change.getText().toUpperCase()); 
+            change.setText(change.getText().toUpperCase());
             return change;
         }));
 
@@ -199,21 +244,25 @@ public class GameController implements ScreanController {
     /**
      * Processa a entrada de dados do usuário em uma célula do tabuleiro.
      * <p>
-     * Este método é acionado por um evento de teclado no {@link TextField} da célula.
+     * Este método é acionado por um evento de teclado no {@link TextField} da
+     * célula.
      * Ele obtém a posição (linha e coluna) da célula no {@link GridPane} e atualiza
      * o modelo de dados {@link Space} correspondente.
      * </p>
      * <p>
      * A validação da entrada é feita com base no tamanho do tabuleiro:
      * <ul>
-     *   <li><b>4x4:</b> Aceita apenas números de 1 a 4.</li>
-     *   <li><b>9x9:</b> Aceita apenas números de 1 a 9.</li>
-     *   <li><b>16x16:</b> Aceita números de 1 a 9 e letras de A a G (insensível a maiúsculas).</li>
+     * <li><b>4x4:</b> Aceita apenas números de 1 a 4.</li>
+     * <li><b>9x9:</b> Aceita apenas números de 1 a 9.</li>
+     * <li><b>16x16:</b> Aceita números de 1 a 9 e letras de A a G (insensível a
+     * maiúsculas).</li>
      * </ul>
-     * Se a entrada for válida, o valor é convertido e salvo no modelo. Se for inválida
+     * Se a entrada for válida, o valor é convertido e salvo no modelo. Se for
+     * inválida
      * ou se o campo for esvaziado, o campo de texto é limpo e o valor no modelo é
      * definido como {@code null}.
      * </p>
+     * 
      * @param field o campo de texto (célula) que originou o evento.
      */
     private void handleInputUser(TextField field) {
@@ -304,7 +353,9 @@ public class GameController implements ScreanController {
                     "Desafio concluído com perfeição. Sua mente está afiada!");
             mainController.showMenu();
         } else if (board.hasErrors()) {
-            SudokuAlerts.showError();
+            SudokuAlerts.showError("Algo não está certo...",
+                    "Conflito detectado!",
+                    "Alguns números está desafiando as leis do Sudoku. Dê uma revisada nas linhas e colunas!");
         } else {
             SudokuAlerts.showWarning("Quase lá!",
                     "O trabalho ainda não acabou!",

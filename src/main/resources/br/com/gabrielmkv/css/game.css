@@ -38,6 +38,33 @@
 }
 
 
+/* --- Símbolo de Loading --- */
+.progress-indicator {
+    -fx-progress-color: #5a7b36; 
+}
+
+.progress-indicator .spinner {
+    -fx-stroke-width: 3px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.progress-indicator *.indicator {
+    -fx-background-color: transparent;
+}
+
+.progress-indicator .percentage {
+    -fx-fill: transparent;
+    -fx-font-size: 0px;
+    -fx-display-label: false;
+}
+
+.progress-indicator:indeterminado .spinner {
+    -fx-stroke: #5a7b36;
+    -fx-stroke-line-cap: round; 
+}
+
+
 /* --- Botões de Ação --- */
 .button {
     -fx-font-size: 14px;
