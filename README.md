@@ -20,24 +20,30 @@ O jogo permite configurar o tamanho do tabuleiro e a dificuldade, gerando desafi
   - Estrategista (Médio)
   - Mestre (Difícil)
   
-- **Sistema de Jogo:**
-  - Inserção e remoção de números via coordenadas.
-  - Validação de jogadas (impede alteração de números fixos/pistas).
-  - Verificação de status (incompleto, completo, com erros).
-  - Visualização do tabuleiro formatado (Console ou GUI).
+- **Geração com Solução Única:** O algoritmo de geração garante que cada desafio tenha uma e apenas uma solução, evitando ambiguidades.
   
-- **Geração Dinâmica:** Algoritmo que cria tabuleiros válidos e embaralha linhas/colunas para garantir variedade.
+- **Interface Responsiva (GUI):** A geração do tabuleiro ocorre em segundo plano, exibindo um indicador de carregamento e mantendo a interface fluida.
+
+- **Sistema de Jogo Completo:**
+  - Inserção e remoção de números.
+  - Validação de jogadas (impede alteração de números fixos).
+  - Verificação de status (incompleto, com erros, etc.).
+  - Opção de limpar o tabuleiro ou finalizar a partida.
 
 ## 🧠 Lógica de Geração e Embaralhamento
 
-O tabuleiro não é apenas preenchido aleatoriamente. Para garantir que o Sudoku seja válido e solúvel, o sistema segue os seguintes passos:
+A geração de cada desafio é um processo robusto para garantir que cada partida seja justa e tenha uma única solução.
 
-1. **Geração de Base Resolvida:** Cria-se uma grade preenchida corretamente usando um algoritmo de deslocamento matemático, garantindo que não haja conflitos iniciais.
-2. **Embaralhamento de Linhas:** As linhas são trocadas aleatoriamente, mas **apenas dentro do mesmo bloco horizontal** (ex: em um 9x9, linhas 0-2 podem trocar entre si, mas nunca com 3-5).
-3. **Embaralhamento de Colunas:** De forma similar, as colunas são trocadas dentro de seus blocos verticais.
-4. **Mascaramento:** Com base na dificuldade, células aleatórias são "escondidas" para criar o desafio.
+1. **Geração de Base Resolvida:** Primeiro, uma grade completa e válida é criada usando um padrão matemático.
 
-Isso garante que todo jogo gerado tenha pelo menos uma solução válida.
+2. **Embaralhamento:** Para criar variedade, esta grade base é embaralhada de múltiplas formas, preservando sua validade:
+
+   - **Números:** Os valores são mapeados aleatoriamente (ex: todos os 1s se tornam 5s, 2s se tornam 8s, etc.).
+   - **Linhas e Colunas:** Linhas e colunas são trocadas aleatoriamente, mas **apenas dentro de seus respectivos blocos** (ex: em um 9x9, as linhas 0-2 podem trocar entre si, mas nunca com as linhas 3-5).
+  
+3. **Criação do Quebra-Cabeça (Puzzle):** Esta é a etapa crucial. Células são removidas uma a uma em ordem aleatória. Após remover cada célula, um **algoritmo de backtracking (solver)** verifica se o tabuleiro continua tendo **uma e apenas uma solução**. Se a remoção criar múltiplas soluções ou nenhuma, a célula é restaurada.
+
+Este processo garante que todo jogo gerado seja desafiador e livre de ambiguidades.
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -91,23 +97,26 @@ alias sudoku-cli='java -jar /caminho/completo/ate/o/projeto/target/sudoku-projec
 
 1. **Menu Inicial:** Selecione a dificuldade e o tamanho do tabuleiro nos menus suspensos e clique em "INICIAR JOGO".
 
-2. **Tabuleiro:**
+2. **Carregamento:** Um indicador de carregamento aparecerá enquanto um novo desafio único é preparado para você.
+
+3. **Tabuleiro:**
 
    - Clique em uma célula para selecioná-la.
    - Digite o número desejado (ou letras A-G para o modo 16x16).
    - Células fixas (em negrito) não podem ser alteradas.
   
-3. **Controles:** Utilize os botões na parte inferior para verificar status, limpar o jogo ou finalizar a partida.
+4. **Controles:** Utilize os botões na parte inferior para verificar status, limpar o jogo ou finalizar a partida.
 
 ### Modo Terminal (Console)
 
 Ao iniciar com a flag `--console`, siga as instruções no menu interativo:
+
 1. **Configuração:** Digite os números correspondentes para escolher o tamanho e a dificuldade.
 
 2. **Menu Principal:** Utilize as opções numéricas para interagir.
 
    - Para jogar, selecione a opção de inserir número, informe a **Coluna** (vertical) e a **Linha** (horizontal).
-   - Em tabuleiros **16x16**, utilize letras de **A** a **G** para representar os números 10, 11, 12, 13, 14, 15 e 16.
+   - Em tabuleiros **16x16**, utilize letras de **A** a **G** para representar os valores de 10 a 16.
 
 ## 👤 Autor
 

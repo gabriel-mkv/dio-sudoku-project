@@ -21,7 +21,7 @@ public class AppConsole {
 
     private final static Scanner scanner = new Scanner(System.in);
 
-    private static Board board = null;
+    private static Board board;
 
     public static void main( String[] args ) {
 
@@ -130,7 +130,7 @@ public class AppConsole {
      * <p>
      * O método verifica se já existe uma instância de {@link Board} ativa para evitar 
      * a sobreposição de jogos. Caso o tabuleiro esteja livre, ele utiliza o 
-     * {@link SudokuGenerator#createSudoku(int, GameDifficultEnum)} para gerar um novo 
+     * {@link SudokuGenerator#generateSudoku(int, Board)} para gerar um novo 
      * desafio técnico usando os parâmetros de {@link Config}.
      * </p>
      * <p>
@@ -144,7 +144,9 @@ public class AppConsole {
             return;
         }
 
-        board = SudokuGenerator.createSudoku(Config.getBoardSize(), Config.getDifficulty());
+        SudokuGenerator generator = new SudokuGenerator(Config.getBoardSize());
+        board = new Board(Config.getBoardSize());
+        generator.generateSudoku(Config.getDifficulty(), board);
         System.out.println("\n  [✓] O jogo foi criado com sucesso! Boa sorte!");
     }
 

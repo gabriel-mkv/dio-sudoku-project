@@ -53,20 +53,20 @@ public final class SudokuAlerts {
     }
 
     /**
-     * Exibe um alerta de erro padronizado para conflitos no jogo.
-     * <p>
-     * Este método é especializado para notificar o usuário quando existem números
-     * incorretos ou inválidos no tabuleiro.
-     * </p>
+     * Exibe um alerta de erro ao usuário.
+     *
+     * @param title o título da janela do alerta.
+     * @param header o cabeçalho da mensagem.
+     * @param content o corpo da mensagem de aviso.
      */
-    public static void showError(){
+    public static void showError(String title, String header, String content){
         Alert alert = new Alert(AlertType.ERROR);
         alert.initOwner(AppFX.getStage());
         alert.initModality(Modality.WINDOW_MODAL);
 
-        alert.setTitle("Algo não está certo...");
-        alert.setHeaderText("Conflito detectado!");
-        alert.setContentText("Alguns números está desafiando as leis do Sudoku. Dê uma revisada nas linhas e colunas!");
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
 
         applyStyle(alert, "alert-error");
         alert.showAndWait();
