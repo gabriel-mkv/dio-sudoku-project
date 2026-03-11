@@ -52,7 +52,9 @@ public class GameController implements ScreanController {
      */
     @FXML
     private void initialize() {
-        board = SudokuGenerator.createSudoku(Config.getBoardSize(), Config.getDifficulty());
+        SudokuGenerator generator = new SudokuGenerator(Config.getBoardSize());
+        board = new Board(Config.getBoardSize());
+        board = generator.generateSudoku(Config.getDifficulty(), board);
         renderBoard();
         setStageWidthAndHeight();
     }
@@ -101,7 +103,7 @@ public class GameController implements ScreanController {
         if (board.getSize() == 16) field.getStyleClass().add("cell-16x16");
 
         if (space.getActualNum() != null) {
-            field.setText(String.valueOf(space.getActualNum()));
+            field.setText(String.valueOf(SymbolConverter.converterIntToChar(space.getActualNum())));
         }
 
         if (space.isFixed()) {
@@ -186,8 +188,10 @@ public class GameController implements ScreanController {
         if ((board.getSize() == 16) && text.matches("[1-9A-G]")) {
             var value = SymbolConverter.converterCharToInteger(text.charAt(0));
             space.setActualNum(value);
-        } else if ((board.getSize() != 16) && text.matches("[1-9]")) {
+        } else if ((board.getSize() == 9) && text.matches("[1-9]")) {
             space.setActualNum(Integer.parseInt(text));    
+        } else if ((board.getSize() == 4) && text.matches("[1-4]")) {
+            space.setActualNum(Integer.parseInt(text));
         } else {
             field.clear();
             space.setActualNum(null);

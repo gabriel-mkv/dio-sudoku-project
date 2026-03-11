@@ -13,15 +13,15 @@ package br.com.gabrielmkv.model;
  */
 public enum GameDifficultEnum {
     
-    EASY(new int []{38, 42, 45}, "Fácil"),
-    MEDIUM(new int []{29, 37, 40}, "Normal"),
-    HARD(new int []{24, 31, 35}, "Difícil");
+    EASY(new int[]{5, 32, 90}, "Fácil"),
+    MEDIUM(new int[]{8, 42, 120}, "Normal"),
+    HARD(new int[]{10, 52, 140}, "Difícil");
 
-    private final int[] percentages;
+    private final int[] cellsRemoved;
     private final String label;
 
-    private GameDifficultEnum(int[] percentages, final String label) {
-        this.percentages = percentages;
+    private GameDifficultEnum(int[] cellsRemoved, final String label) {
+        this.cellsRemoved = cellsRemoved;
         this.label = label;
     }
 
@@ -33,10 +33,10 @@ public enum GameDifficultEnum {
      */
     public int getPercentage(int size) {
         return switch (size) {
-            case 4 -> percentages[0];
-            case 9 -> percentages[1];
-            case 16 -> percentages[2];
-            default -> percentages[1];
+            case 4 -> cellsRemoved[0];
+            case 9 -> cellsRemoved[1];
+            case 16 -> cellsRemoved[2];
+            default -> cellsRemoved[1];
         };
     }
 
