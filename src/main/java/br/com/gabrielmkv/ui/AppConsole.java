@@ -130,7 +130,7 @@ public class AppConsole {
      * <p>
      * O método verifica se já existe uma instância de {@link Board} ativa para evitar 
      * a sobreposição de jogos. Caso o tabuleiro esteja livre, ele utiliza o 
-     * {@link SudokuGenerator#createSudoku(int, GameDifficultEnum)} para gerar um novo 
+     * {@link SudokuGenerator#generateSudoku(int, Board)} para gerar um novo 
      * desafio técnico usando os parâmetros de {@link Config}.
      * </p>
      * <p>

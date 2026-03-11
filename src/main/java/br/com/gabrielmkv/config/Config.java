@@ -25,7 +25,7 @@ public final class Config {
 
     public static void setup(GameBoardSizeEnum size, GameDifficultEnum difficulty) {
         BOARD_SIZE = size.getSize();
-        DIFFICULTY = difficulty.getPercentage(size.getSize());
+        DIFFICULTY = difficulty.getCellsRemoved(size.getSize());
     }
 
     public static int getBoardSize() {

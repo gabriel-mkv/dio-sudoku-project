@@ -33,9 +33,13 @@ public final class SymbolConverter {
     public static Integer converterCharToInteger(char symbol){
         if (symbol >= '1' && symbol <= '9') {
             return symbol - '0';
-        } else {
+        } 
+        
+        if (symbol >= 'A' && symbol <= 'G') {
             return symbol - 'A' + 10;
         }
+
+        return null;
     }
 
 }

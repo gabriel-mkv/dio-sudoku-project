@@ -3,13 +3,21 @@ package br.com.gabrielmkv.model;
 /**
  * Enumerado que representa a dificuldade do jogo do Sudoku.
  * <p>
- * Cada instância do enum contém a porcentagem de valores preenchidos no tabuleiro para cada dificuldade.
+ * Cada instância do enum define o número de células que serão removidas de um
+ * tabuleiro completo para gerar o desafio, com base no tamanho da grade.
+ * </p>
  * <p>
- * A porcentagem de valores preenchidos pode ser obtida através do método {@link #getPercentage(int)}.
+ * O valor para cada tamanho é armazenado em um array de inteiros (`cellsRemoved`),
+ * onde o índice corresponde ao tamanho do tabuleiro:
+ * <ul>
+ *   <li>Índice 0: Tabuleiro 4x4</li>
+ *   <li>Índice 1: Tabuleiro 9x9</li>
+ *   <li>Índice 2: Tabuleiro 16x16</li>
+ * </ul>
+ * </p>
  * <p>
- * O array de inteiros em cada constante segue o mapeamento: [0]=4x4, [1]=9x9 e [2]=16x16
- * <p>
- * A porcentagem é calculada com base no tamanho do tabuleiro, que pode ser obtido através do método {@link GameBoardSizeEnum#getSize()}.
+ * O número de células a serem removidas para uma partida pode ser obtido através
+ * do método {@link #getCellsRemoved(int)}.
  */
 public enum GameDifficultEnum {
     
@@ -26,12 +34,13 @@ public enum GameDifficultEnum {
     }
 
     /**
-     * Retorna a porcentagem de valores preenchidos no tabuleiro para a dificuldade especificada.
+     * Retorna o número de células a serem removidas do tabuleiro para a dificuldade e tamanho especificados.
+     * <p>
      *
-     * @param size o tamanho do tabuleiro
-     * @return a porcentagem de valores preenchidos no tabuleiro
+     * @param size o tamanho do tabuleiro (4, 9 ou 16).
+     * @return o número de células a serem removidas.
      */
-    public int getPercentage(int size) {
+    public int getCellsRemoved(int size) {
         return switch (size) {
             case 4 -> cellsRemoved[0];
             case 9 -> cellsRemoved[1];
